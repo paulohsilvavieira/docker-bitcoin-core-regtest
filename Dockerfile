@@ -1,4 +1,6 @@
-FROM ubuntu:latest
+FROM debian:bullseye-slim
+
+LABEL maintainer.0="Paulo Henrique  (@paulohsilvavieira)"
 
 RUN apt update -y && apt upgrade -y
 
