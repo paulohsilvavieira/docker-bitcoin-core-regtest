@@ -24,16 +24,22 @@ WORKDIR /bitcoin_download/bitcoin-25.0
 
 RUN mv ./bin/* /usr/bin
 
-WORKDIR /usr/bin
+WORKDIR /
 
-RUN ls -la
+RUN rm -rf bitcoin_download
 
 WORKDIR /bitcoin
 
 COPY . .
 
-RUN chmod +x /scripts/createwallet.sh
-RUN chmod +x /scripts/automining.sh
+RUN ls -la
+
+WORKDIR /bitcoin/scripts
+
+RUN chmod +x createwallet.sh
+RUN chmod +x automining.sh
+
+WORKDIR /bitcoin
 
 RUN touch automining.log
 
