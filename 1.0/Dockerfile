@@ -28,22 +28,27 @@ WORKDIR /
 
 RUN rm -rf bitcoin_download
 
-WORKDIR /bitcoin
+WORKDIR /scripts
 
-COPY . .
+COPY /scripts/createwallet.sh createwallet.sh
 
-RUN ls -la
-
-WORKDIR /bitcoin/scripts
+COPY /scripts/automining.sh automining.sh
 
 RUN chmod +x createwallet.sh
+
 RUN chmod +x automining.sh
+
+WORKDIR /root
+
+RUN echo "alias automining='nohup /scripts/automining.sh > /bitcoin/automining.log 2>&1 &'" >> .bashrc
+
+RUN echo "alias createwallet='/scripts/createwallet.sh'" >> .bashrc
 
 WORKDIR /bitcoin
 
-RUN touch automining.log
+COPY bitcoin.conf .
 
-EXPOSE 8333 18332 18333 8332 18443 8443
+EXPOSE 18445 18333 18444 38333 29000
 
 CMD ["bitcoind", "-conf=/bitcoin/bitcoin.conf"]
 
