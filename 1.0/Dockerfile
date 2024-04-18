@@ -2,6 +2,9 @@ FROM debian:bullseye-slim
 
 LABEL maintainer.0="Paulo Henrique  (@paulohsilvavieira)"
 
+RUN curl -sL https://deb.nodesource.com/setup_20.x | bash -
+
+
 RUN apt update -y && apt upgrade -y
 
 RUN apt install -y\
@@ -11,8 +14,8 @@ RUN apt install -y\
   python3 libboost-system-dev libboost-filesystem-dev\
   libboost-chrono-dev libboost-program-options-dev libboost-test-dev\
   libboost-thread-dev libboost-dev\
-  libsqlite3-dev libminiupnpc-dev libnatpmp-dev libzmq3-dev\
-  && apt clean
+  libsqlite3-dev libminiupnpc-dev libnatpmp-dev libzmq3-dev procps nodejs npm\
+  && apt clean 
 
 WORKDIR /bitcoin_download
 
@@ -24,29 +27,23 @@ WORKDIR /bitcoin_download/bitcoin-25.0
 
 RUN mv ./bin/* /usr/bin
 
-WORKDIR /
-
 RUN rm -rf bitcoin_download
 
-WORKDIR /scripts
-
-COPY /scripts/createwallet.sh createwallet.sh
-
-COPY /scripts/automining.sh automining.sh
-
-RUN chmod +x createwallet.sh
-
-RUN chmod +x automining.sh
-
-WORKDIR /root
-
-RUN echo "alias automining='nohup /scripts/automining.sh > /bitcoin/automining.log 2>&1 &'" >> .bashrc
-
-RUN echo "alias createwallet='/scripts/createwallet.sh'" >> .bashrc
 
 WORKDIR /bitcoin
 
 COPY bitcoin.conf .
+
+COPY package.json .
+
+
+COPY /scripts/createwallet.sh .
+
+COPY /scripts/automining.sh .
+
+RUN chmod +x createwallet.sh
+
+RUN chmod +x automining.sh
 
 EXPOSE 18445 18333 18444 38333 29000
 

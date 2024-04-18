@@ -1,0 +1,15 @@
+{
+  "name": "blockchain-bitcoin-regtest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "createwallet": "./createwallet.sh",
+    "start-automining-detached": "nohup ./automining.sh > automining.out 2>&1 &",
+    "start-automining": "./automining.sh"
+
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
